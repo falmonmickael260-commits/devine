@@ -1,0 +1,24 @@
+# Robot DEVINE : décompresse devine.zip à la racine du dépôt puis le supprime.
+name: Déballer le projet DEVINE
+on:
+  push:
+    paths: ['devine.zip']
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  deballer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Décompresser et enregistrer
+        run: |
+          unzip -oq devine.zip -d /tmp/projet
+          cp -a /tmp/projet/devine/. .
+          git rm -q --cached devine.zip
+          rm -f devine.zip
+          git config user.name "github-actions[bot]"
+          git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Projet DEVINE installé"
+          git push
