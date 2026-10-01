@@ -1,0 +1,23 @@
+{
+  "name": "devine",
+  "version": "0.1.0",
+  "description": "DEVINE — moteur de jeu et serveur multijoueur (phase 1 : règles et logique, sans interface)",
+  "type": "module",
+  "main": "src/index.js",
+  "engines": {
+    "node": ">=18.17"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "node --test",
+    "simulate": "node scripts/simulate.js",
+    "build:demo": "node scripts/build-demo.js"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.1"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.12",
+    "socket.io-client": "^4.8.1"
+  }
+}

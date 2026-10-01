@@ -1,0 +1,11 @@
+Photos des catégories (facultatif)
+
+Dépose ici une photo par catégorie, nommée exactement :
+  personnalites.jpg   films_series.jpg   sport.jpg   disney.jpg   mix.jpg
+(.webp accepté aussi). Taille conseillée : 900 × 600 px, moins de 200 Ko.
+
+Sans fichier, le jeu affiche l'illustration vectorielle de la catégorie.
+
+Utilise uniquement des images dont tu as les droits : banques libres
+(Unsplash, Pexels…) ou achetées. Évite les personnages Disney et les
+photos de célébrités : elles sont protégées.

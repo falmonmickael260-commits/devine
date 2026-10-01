@@ -1,0 +1,117 @@
+/* ============================================================
+ *  DEVINE — TOKENS DE DESIGN
+ *  Toutes les couleurs, polices, tailles et durées du jeu.
+ *  Pour changer l'identité visuelle : modifier UNIQUEMENT ce fichier.
+ * ============================================================ */
+
+/* ---------- Polices (auto-hébergées, licence OFL) ---------- */
+@font-face {
+  font-family: 'Unbounded';
+  src: url('/fonts/unbounded-latin-wght-normal.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'Unbounded';
+  src: url('/fonts/unbounded-latin-ext-wght-normal.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage-grotesque-latin-standard-normal.woff2') format('woff2-variations');
+  font-weight: 200 800;
+  font-stretch: 75% 100%;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  src: url('/fonts/bricolage-grotesque-latin-ext-standard-normal.woff2') format('woff2-variations');
+  font-weight: 200 800;
+  font-stretch: 75% 100%;
+  font-display: swap;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+A720-A7FF;
+}
+
+:root {
+  /* ---------- Couleurs de base ---------- */
+  --ink: #090620;          /* fond le plus profond (encre bleu-violet) */
+  --stage: #16104a;        /* plateau */
+  --stage-2: #231a6b;      /* panneaux */
+  --line: rgba(190, 180, 255, 0.16); /* filets, contours discrets */
+  --chalk: #f3f0ff;        /* texte principal */
+  --muted: #a9a3d6;        /* texte secondaire */
+  --dim: #6f68a8;          /* texte tertiaire */
+
+  /* ---------- Couleurs de jeu ---------- */
+  --team-a: #2be8ff;       /* Équipe A : cyan électrique */
+  --team-a-deep: #0a8fb8;
+  --team-b: #ff3b8d;       /* Équipe B : rose magenta */
+  --team-b-deep: #b3125a;
+  --gold: #ffc83d;         /* lumière de plateau, hôte, victoire */
+  --gold-deep: #e08a00;
+  --success: #3be38a;      /* TROUVÉ */
+  --danger: #ff5a4e;       /* chrono critique, erreurs */
+
+  /* Couleurs de catégories */
+  --cat-personnalites: #ffb23f;
+  --cat-films_series: #ff4f6d;
+  --cat-sport: #3be38a;
+  --cat-disney: #9b7bff;
+  --cat-mix: #2be8ff;
+
+  /* ---------- Typographie ---------- */
+  --font-display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+  --font-body: 'Bricolage Grotesque', 'Segoe UI', system-ui, sans-serif;
+
+  /* Échelle typographique fluide (mobile → ordinateur) */
+  --fs-xs: 0.8125rem;
+  --fs-sm: 0.9375rem;
+  --fs-md: 1.0625rem;
+  --fs-lg: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
+  --fs-xl: clamp(1.5rem, 1.2rem + 1.2vw, 2.1rem);
+  --fs-2xl: clamp(2rem, 1.4rem + 2.6vw, 3.4rem);
+  /* Logo : suit la largeur ET la hauteur (téléphone en paysage, petits écrans) */
+  --fs-logo: clamp(2.3rem, min(13vw, 8dvh), 6.5rem);
+
+  /* ---------- Espacements & formes ---------- */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --radius-sm: 10px;       /* petits éléments (chips, tuiles de code) */
+  --radius-md: 16px;       /* panneaux joueurs */
+  --radius-lg: 24px;       /* cartes, grandes zones */
+  --radius-pill: 999px;    /* gros boutons d'action */
+
+  /* Taille minimale des zones tactiles (mobile) */
+  --tap: 52px;
+
+  /* ---------- Mouvement ---------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 140ms;
+  --dur-med: 320ms;
+  --dur-slow: 600ms;
+
+  /* ---------- Profondeur ---------- */
+  --shadow-panel: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 18px 40px -18px rgba(0, 0, 0, 0.8);
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Mouvement réduit : on coupe les animations décoratives */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 1ms;
+    --dur-med: 1ms;
+    --dur-slow: 1ms;
+  }
+}

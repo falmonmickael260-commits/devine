@@ -1,0 +1,103 @@
+/* ============================================================
+ *  DEVINE — BASE (reset, typo, accessibilité)
+ * ============================================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--ink);
+  color: var(--chalk);
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  line-height: 1.45;
+  overflow-x: hidden;
+  /* Évite le zoom/scroll parasite pendant les manipulations tactiles */
+  overscroll-behavior: none;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0;
+}
+
+button,
+input {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  background: none;
+  padding: 0;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+svg {
+  display: block;
+}
+
+/* Focus clavier bien visible, sans gêner le tactile */
+:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 12px;
+}
+
+/* L'attribut hidden doit toujours gagner (sinon display:flex des boutons l'écrase) */
+[hidden] {
+  display: none !important;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Conteneur de l'application : au-dessus du décor */
+.app {
+  position: relative;
+  z-index: 1;
+  min-height: 100dvh;
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+}

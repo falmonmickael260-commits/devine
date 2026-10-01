@@ -1,0 +1,765 @@
+/* ============================================================
+ *  DEVINE — COMPOSANTS
+ *  Boutons, logo, tuiles de code, champs, panneaux joueurs,
+ *  cartes de catégorie, messages, fenêtres.
+ * ============================================================ */
+
+/* ============ LOGO (lettres épaisses, contour, relief) ============ */
+.brand {
+  position: relative;
+  display: inline-block;
+}
+.logo {
+  position: relative;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: var(--fs-logo);
+  line-height: 1;
+  letter-spacing: 0.01em;
+  transform: rotate(-4deg);
+}
+.logo__back,
+.logo__front {
+  display: block;
+  white-space: nowrap;
+}
+.logo__front {
+  position: absolute;
+  inset: 0;
+}
+/* Couche arrière : contour épais + épaisseur 3D vers le bas */
+.logo__back .logo__letter {
+  color: #140c40;
+  -webkit-text-stroke: 0.15em #140c40;
+  text-shadow:
+    0 0.07em 0 #140c40,
+    0 0.13em 0 #140c40,
+    0 0.22em 28px rgba(0, 0, 0, 0.55);
+}
+/* Couche avant : remplissage doré brillant */
+.logo__front .logo__letter {
+  color: transparent;
+  background: linear-gradient(180deg, #fffdf0 0%, #ffe680 30%, #ffc531 52%, #ff9a1a 78%, #ff6a1a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-stroke: 0.012em rgba(255, 255, 255, 0.5);
+}
+.logo__letter {
+  display: inline-block;
+  animation:
+    letter-pop 620ms var(--ease-spring) both,
+    letter-wave 3.8s ease-in-out infinite;
+  animation-delay:
+    calc(250ms + var(--i) * 70ms),
+    calc(1400ms + var(--i) * 120ms);
+}
+@keyframes letter-pop {
+  from { opacity: 0; transform: translateY(-0.6em) scale(0.4); }
+}
+@keyframes letter-wave {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-0.06em); }
+}
+.brand--small .logo {
+  font-size: clamp(1.15rem, 0.95rem + 0.8vw, 1.5rem);
+  transform: rotate(-3deg);
+}
+.brand--small .logo__letter {
+  animation: none;
+}
+
+/* Pastille « ? » (positionnée en fonction de la taille du logo) */
+.brand {
+  font-size: var(--fs-logo);
+}
+.brand--small {
+  font-size: clamp(1.15rem, 0.95rem + 0.8vw, 1.5rem);
+}
+.logo-qmark {
+  position: absolute;
+  right: calc(var(--fs-logo) * -0.42);
+  top: calc(var(--fs-logo) * -0.3);
+  display: grid;
+  place-items: center;
+  width: clamp(34px, 0.55 * var(--fs-logo), 60px);
+  height: clamp(34px, 0.55 * var(--fs-logo), 60px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #ff9cc6, var(--team-b) 55%, var(--team-b-deep));
+  box-shadow: 0 0 0 3px #140c40, 0 5px 0 3px #140c40, 0 0 28px rgba(255, 59, 141, 0.7);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.1rem, 0.32 * var(--fs-logo), 2rem);
+  color: #fff;
+  text-shadow: 0 2px 0 #7a0b3d;
+  transform: rotate(14deg);
+  animation:
+    letter-pop 620ms 750ms var(--ease-spring) both,
+    qmark-bob 3.2s 1.4s var(--ease-out) infinite;
+}
+@keyframes qmark-bob {
+  0%, 100% { transform: rotate(14deg) translateY(0); }
+  50% { transform: rotate(4deg) translateY(-6px); }
+}
+
+/* ============ BOUTONS ============ */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7em;
+  min-height: var(--tap);
+  padding: 0 1.6em;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  user-select: none;
+  transition: transform var(--dur-fast) var(--ease-out), filter var(--dur-fast), box-shadow var(--dur-med);
+}
+.btn svg {
+  width: 1.5em;
+  height: 1.5em;
+  flex: none;
+}
+.btn:active:not(:disabled) {
+  transform: translateY(2px) scale(0.98);
+}
+.btn:disabled {
+  filter: grayscale(0.8) brightness(0.65);
+}
+
+/* Bouton principal : grosse touche dorée façon jeu mobile
+   (contour encre + épaisseur en bas + reflet en haut) */
+.btn--primary {
+  color: #3a1a00;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  background: linear-gradient(180deg, #fff3c2 0%, #ffd84a 34%, #ffb21c 70%, #ff9410 100%);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -6px 0 #e07400,
+    0 0 0 3px #140c40,
+    0 7px 0 3px #140c40,
+    0 18px 34px -8px rgba(255, 170, 40, 0.55);
+}
+.btn--primary:active:not(:disabled) {
+  transform: translateY(5px);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -4px 0 #e07400,
+    0 0 0 3px #140c40,
+    0 2px 0 3px #140c40,
+    0 8px 20px -8px rgba(255, 170, 40, 0.5);
+}
+/* Reflet qui balaye le bouton principal */
+.btn--primary::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, 0.55) 50%, transparent 65%);
+  background-size: 250% 100%;
+  background-position: 120% 0;
+  animation: btn-shine 4.5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btn-shine {
+  0%, 70% { background-position: 120% 0; }
+  100% { background-position: -120% 0; }
+}
+
+/* Bouton secondaire : même relief, en bleu électrique */
+.btn--secondary {
+  color: #ffffff;
+  text-shadow: 0 2px 0 #0b3b8f;
+  background: linear-gradient(180deg, #8ff7ff 0%, #38d6ff 32%, #1c9bff 68%, #1a6dff 100%);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -6px 0 #1452c9,
+    0 0 0 3px #140c40,
+    0 7px 0 3px #140c40,
+    0 18px 34px -8px rgba(43, 180, 255, 0.5);
+}
+.btn--secondary:active:not(:disabled) {
+  transform: translateY(5px);
+  box-shadow:
+    inset 0 3px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -4px 0 #1452c9,
+    0 0 0 3px #140c40,
+    0 2px 0 3px #140c40;
+}
+
+/* Bouton contour lumineux (actions secondaires en jeu) */
+.btn--glow {
+  color: var(--chalk);
+  background: linear-gradient(180deg, rgba(43, 232, 255, 0.14), rgba(43, 232, 255, 0.04));
+  box-shadow:
+    0 0 0 2px rgba(43, 232, 255, 0.7) inset,
+    0 0 24px rgba(43, 232, 255, 0.25),
+    0 6px 0 rgba(10, 143, 184, 0.55);
+}
+
+/* Bouton discret */
+.btn--ghost {
+  min-height: 44px;
+  padding: 0 1.1em;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 1px var(--line) inset;
+}
+
+.btn--block {
+  width: 100%;
+}
+.btn--xl {
+  min-height: clamp(54px, 8dvh, 68px);
+  /* Reste sur une ligne même sur petit téléphone */
+  font-size: clamp(0.8rem, 0.5rem + 1.5vw, 1.15rem);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Bouton icône rond (paramètres, règles, retour…) */
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  color: var(--muted);
+  background: rgba(35, 26, 107, 0.55);
+  box-shadow: 0 0 0 1px var(--line) inset;
+  backdrop-filter: blur(6px);
+  transition: color var(--dur-fast), background var(--dur-fast);
+}
+.icon-btn svg {
+  width: 22px;
+  height: 22px;
+}
+.icon-btn:hover {
+  color: var(--chalk);
+}
+.icon-btn[aria-pressed='false'] {
+  color: var(--dim);
+}
+
+/* ============ TUILES DE CODE (style tableau d'affichage) ============ */
+.code-tiles {
+  display: flex;
+  gap: clamp(6px, 1.6vw, 10px);
+  justify-content: center;
+}
+.code-tile {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: clamp(40px, min(13vw, 9dvh), 66px);
+  aspect-ratio: 0.82;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: clamp(1.35rem, min(8vw, 5.5dvh), 2.5rem);
+  color: var(--gold);
+  text-shadow: 0 0 14px rgba(255, 200, 61, 0.7);
+  background: linear-gradient(180deg, #1f175e 0%, #1f175e 49%, #170f4b 51%, #120c3a 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 0 0 1px rgba(255, 200, 61, 0.25),
+    0 10px 20px -8px rgba(0, 0, 0, 0.8);
+}
+/* Fente centrale des panneaux à lamelles */
+.code-tile::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.55);
+}
+/* Arrivée des lettres : rotation façon panneau d'aéroport */
+.code-tile.is-flipping {
+  animation: tile-flip 520ms var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 90ms);
+}
+@keyframes tile-flip {
+  0% { transform: perspective(300px) rotateX(-95deg); opacity: 0; }
+  60% { transform: perspective(300px) rotateX(12deg); opacity: 1; }
+  100% { transform: perspective(300px) rotateX(0); }
+}
+/* Version saisie (écran Rejoindre) */
+.code-tile--input {
+  color: var(--chalk);
+  text-shadow: none;
+}
+.code-tile--input.is-active {
+  box-shadow:
+    0 0 0 2px var(--team-a),
+    0 0 22px rgba(43, 232, 255, 0.45);
+}
+.code-tile--input.is-active:empty::before {
+  content: '';
+  width: 3px;
+  height: 46%;
+  background: var(--team-a);
+  animation: caret 1s steps(1) infinite;
+}
+@keyframes caret {
+  50% { opacity: 0; }
+}
+.code-tile--input.is-filled {
+  color: var(--gold);
+  text-shadow: 0 0 14px rgba(255, 200, 61, 0.6);
+  animation: tile-pop 220ms var(--ease-spring);
+}
+@keyframes tile-pop {
+  from { transform: scale(0.82); }
+}
+
+/* ============ CHAMPS ============ */
+.field {
+  display: grid;
+  gap: var(--space-2);
+}
+.field__label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--muted);
+}
+.field__input {
+  width: 100%;
+  min-height: 58px;
+  padding: 0 1.1rem;
+  border: 0;
+  border-radius: var(--radius-md);
+  font-size: var(--fs-lg);
+  font-weight: 600;
+  background: rgba(9, 6, 32, 0.65);
+  box-shadow: 0 0 0 1.5px var(--line) inset;
+  transition: box-shadow var(--dur-fast);
+}
+.field__input::placeholder {
+  color: var(--dim);
+}
+.field__input:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--team-a) inset, 0 0 22px rgba(43, 232, 255, 0.25);
+}
+.field__hint {
+  font-size: var(--fs-xs);
+  color: var(--dim);
+}
+
+/* ============ PANNEAU (verre fumé) ============ */
+.panel {
+  position: relative;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, rgba(35, 26, 107, 0.72), rgba(18, 12, 58, 0.78));
+  box-shadow: var(--shadow-panel), 0 0 0 1px var(--line) inset;
+  backdrop-filter: blur(10px);
+}
+
+/* ============ PANNEAU JOUEUR (lobby) ============ */
+.player {
+  --team: var(--team-a);
+  --team-deep: var(--team-a-deep);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 62px;
+  padding: 8px 10px 8px 8px;
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(90deg, color-mix(in srgb, var(--team) 16%, transparent), transparent 70%),
+    rgba(18, 12, 58, 0.85);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--team) 35%, transparent) inset;
+  overflow: hidden;
+}
+.player[data-team='B'] {
+  --team: var(--team-b);
+  --team-deep: var(--team-b-deep);
+}
+.player.is-me {
+  box-shadow:
+    0 0 0 2px var(--team) inset,
+    0 0 20px color-mix(in srgb, var(--team) 30%, transparent);
+}
+.player.is-offline {
+  opacity: 0.5;
+}
+/* Avatar : monogramme dans un hexagone lumineux */
+.player__avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  clip-path: polygon(25% 4%, 75% 4%, 100% 50%, 75% 96%, 25% 96%, 0 50%);
+  background: linear-gradient(160deg, var(--team), var(--team-deep));
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.15rem;
+  color: #0b0730;
+}
+.player__body {
+  flex: 1;
+  min-width: 0;
+}
+.player__name {
+  display: block;
+  font-weight: 700;
+  font-size: var(--fs-md);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.player__meta {
+  display: flex;
+  gap: var(--space-2);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.player__tag--host {
+  color: var(--gold);
+  font-weight: 700;
+}
+.player__status {
+  flex: none;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--success);
+  box-shadow: 0 0 10px var(--success);
+}
+.player.is-offline .player__status {
+  background: var(--dim);
+  box-shadow: none;
+}
+.player__move {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.06);
+}
+.player__move svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Arrivée d'un joueur : panneau qui glisse + balayage lumineux */
+.player.is-arriving {
+  animation: player-in 560ms var(--ease-spring) both;
+}
+.player.is-arriving::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(100deg, transparent 20%, color-mix(in srgb, var(--team) 70%, white) 50%, transparent 80%);
+  mix-blend-mode: screen;
+  transform: translateX(-110%);
+  animation: player-sweep 700ms 160ms var(--ease-out) forwards;
+  pointer-events: none;
+}
+@keyframes player-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.92); }
+}
+@keyframes player-sweep {
+  to { transform: translateX(110%); }
+}
+/* Emplacement libre */
+.player-slot {
+  display: grid;
+  place-items: center;
+  min-height: 62px;
+  border-radius: var(--radius-md);
+  border: 1.5px dashed rgba(190, 180, 255, 0.18);
+  font-size: var(--fs-xs);
+  color: var(--dim);
+}
+
+/* ============ CARTE DE CATÉGORIE ============ */
+.cat-card {
+  --cat: var(--gold);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--radius-lg);
+  text-align: left;
+  background: #120c3a;
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--cat) 30%, transparent) inset,
+    0 16px 30px -14px rgba(0, 0, 0, 0.9);
+  overflow: hidden;
+  transition: transform var(--dur-med) var(--ease-spring), box-shadow var(--dur-med), opacity var(--dur-med);
+}
+.cat-card__art {
+  position: relative;
+  aspect-ratio: 3 / 2;
+}
+.cat-card__art svg {
+  width: 100%;
+  height: 100%;
+}
+.cat-card__body {
+  display: grid;
+  gap: 2px;
+  padding: 10px 14px 14px;
+}
+.cat-card__title {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(0.95rem, 0.85rem + 0.4vw, 1.15rem);
+}
+.cat-card__info {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+.cat-card__check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #0b0730;
+  background: var(--cat);
+  box-shadow: 0 0 0 3px #120c3a, 0 0 18px var(--cat);
+  transform: scale(0);
+  transition: transform var(--dur-med) var(--ease-spring);
+}
+.cat-card__check svg {
+  width: 18px;
+  height: 18px;
+}
+.cat-card.is-selected {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 0 3px var(--cat) inset,
+    0 0 34px color-mix(in srgb, var(--cat) 55%, transparent),
+    0 22px 34px -14px rgba(0, 0, 0, 0.9);
+}
+.cat-card.is-selected .cat-card__check {
+  transform: scale(1);
+}
+.cat-card.is-unavailable {
+  opacity: 0.45;
+}
+.cat-card.is-unavailable .cat-card__info {
+  color: var(--danger);
+}
+.cat-card:not(:disabled):active {
+  transform: scale(0.97);
+}
+.cat-card[data-cat='personnalites'] { --cat: var(--cat-personnalites); }
+.cat-card[data-cat='films_series'] { --cat: var(--cat-films_series); }
+.cat-card[data-cat='sport'] { --cat: var(--cat-sport); }
+.cat-card[data-cat='disney'] { --cat: var(--cat-disney); }
+.cat-card[data-cat='mix'] { --cat: var(--cat-mix); }
+
+/* ============ MESSAGES (toasts) ============ */
+.toasts {
+  position: fixed;
+  left: 50%;
+  top: calc(var(--safe-top) + 12px);
+  z-index: 50;
+  display: grid;
+  gap: 8px;
+  width: min(92vw, 420px);
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+/* Masqué dans le lobby et en jeu (la barre d'action occupe le bas) */
+body:has(.lobby, .game-wait) .demo-badge {
+  display: none;
+}
+.toast {
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  background: #241a6e;
+  box-shadow: 0 0 0 1px var(--line) inset, 0 14px 30px -10px rgba(0, 0, 0, 0.8);
+  animation: toast-in 280ms var(--ease-spring);
+}
+.toast--error {
+  background: #4a1030;
+  box-shadow: 0 0 0 1.5px var(--danger) inset, 0 14px 30px -10px rgba(0, 0, 0, 0.8);
+}
+.toast--success {
+  box-shadow: 0 0 0 1.5px var(--success) inset, 0 14px 30px -10px rgba(0, 0, 0, 0.8);
+}
+.toast.is-leaving {
+  animation: toast-out 220ms ease-in forwards;
+}
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(-12px) scale(0.96); }
+}
+@keyframes toast-out {
+  to { opacity: 0; transform: translateY(-8px); }
+}
+
+/* Bannière « connexion perdue » */
+.net-banner {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--safe-bottom) + 14px);
+  z-index: 60;
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  color: #2a1400;
+  background: var(--gold);
+  transform: translateX(-50%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+}
+
+/* ============ FENÊTRE (règles, pseudo…) ============ */
+.sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: grid;
+  align-items: end;
+  justify-items: center;
+  background: rgba(5, 3, 18, 0.7);
+  backdrop-filter: blur(4px);
+  animation: fade-in var(--dur-med) ease;
+}
+.sheet {
+  width: min(100%, 560px);
+  max-height: 88dvh;
+  overflow-y: auto;
+  padding: var(--space-5) var(--space-5) calc(var(--space-5) + var(--safe-bottom));
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: linear-gradient(180deg, #241a6e, #140e4a);
+  box-shadow: 0 0 0 1px var(--line) inset, 0 -20px 60px rgba(0, 0, 0, 0.6);
+  animation: sheet-up var(--dur-med) var(--ease-out);
+}
+@media (min-width: 700px) {
+  .sheet-backdrop {
+    align-items: center;
+  }
+  .sheet {
+    border-radius: var(--radius-lg);
+  }
+}
+.sheet__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+.sheet__title {
+  font-size: var(--fs-lg);
+}
+@keyframes sheet-up {
+  from { transform: translateY(40px); opacity: 0; }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+}
+
+/* Liste des 3 manches (règles) */
+.rounds {
+  display: grid;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+  padding: 0;
+  list-style: none;
+}
+.rounds li {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: rgba(9, 6, 32, 0.5);
+}
+.rounds__num {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-weight: 900;
+  color: #2a1400;
+  background: var(--gold);
+}
+.rounds strong {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+}
+.rounds span {
+  font-size: var(--fs-sm);
+  color: var(--muted);
+}
+.prose {
+  display: grid;
+  gap: var(--space-3);
+  color: var(--muted);
+  font-size: var(--fs-sm);
+}
+.prose strong {
+  color: var(--chalk);
+}
+
+/* ============ VISUEL DE CATÉGORIE (photo ou illustration) ============ */
+.cat-visual {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cat-visual svg,
+.cat-visual__photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* Sur une photo : léger dégradé pour garder l'unité visuelle */
+.cat-visual.has-photo::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(9, 6, 32, 0.45));
+}
+
+/* Bandeau de la version démo (absent de la vraie version) */
+.demo-badge {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--safe-bottom) + 6px);
+  z-index: 5;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  background: rgba(9, 6, 32, 0.7);
+  box-shadow: 0 0 0 1px var(--line) inset;
+  white-space: nowrap;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+/* Masqué dans le lobby et en jeu (la barre d'action occupe le bas) */
+body:has(.lobby, .game-wait) .demo-badge {
+  display: none;
+}

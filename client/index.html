@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#090620">
+  <meta name="description" content="DEVINE — le jeu d'équipes en 3 manches : décris, un seul mot, dessine.">
+  <title>DEVINE</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎲</text></svg>">
+
+  <!-- Styles : ordre important (tokens → base → décor → composants → écrans) -->
+  <link rel="stylesheet" href="/css/tokens.css">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/stage.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/screens.css">
+</head>
+<body>
+  <!-- ===== Décor du plateau (fixe, derrière tout) ===== -->
+  <div class="stage" aria-hidden="true">
+    <div class="stage__sky"></div>
+    <div class="stage__rays"></div>
+    <div class="stage__beam stage__beam--left"></div>
+    <div class="stage__beam stage__beam--right"></div>
+    <div class="stage__panel stage__panel--left"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="stage__panel stage__panel--right"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="stage__shapes"></div>
+    <div class="stage__floor"></div>
+    <div class="stage__floor-glow"></div>
+    <canvas class="stage__particles"></canvas>
+    <div class="stage__vignette"></div>
+  </div>
+
+  <!-- ===== Application ===== -->
+  <main id="app" class="app"></main>
+
+  <!-- Messages courts (erreurs, confirmations) -->
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+
+  <!-- Bannière de connexion -->
+  <div id="net-banner" class="net-banner" hidden>Connexion au serveur…</div>
+
+  <!-- Socket.IO client : servi automatiquement par le serveur DEVINE -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

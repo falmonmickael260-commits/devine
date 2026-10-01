@@ -1,0 +1,598 @@
+/* ============================================================
+ *  DEVINE — ÉCRANS
+ *  Menu principal, Créer, Rejoindre, Lobby (+ catégories),
+ *  écran d'attente du jeu.
+ *  Mobile d'abord ; tablette/ordinateur à partir de 768 / 1100 px.
+ * ============================================================ */
+
+/* ============ Structure commune ============ */
+.screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom));
+  padding: var(--space-4) clamp(16px, 4vw, 40px) var(--space-5);
+}
+.screen.is-entering {
+  animation: screen-in 420ms var(--ease-out) both;
+}
+.screen.is-leaving {
+  position: absolute;
+  inset: 0;
+  animation: screen-out 220ms ease-in forwards;
+  pointer-events: none;
+}
+@keyframes screen-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.985); }
+}
+@keyframes screen-out {
+  to { opacity: 0; transform: scale(1.02); }
+}
+
+/* Barre du haut (retour / logo / options) */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 50px;
+}
+.topbar__group {
+  display: flex;
+  gap: var(--space-2);
+}
+
+/* ============ MENU PRINCIPAL ============ */
+.menu__hero {
+  flex: 1;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: clamp(10px, 2.2dvh, 24px);
+  text-align: center;
+}
+.menu__tagline {
+  max-width: 34ch;
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--muted);
+  animation: fade-in 600ms 900ms both;
+}
+.menu__actions {
+  display: grid;
+  gap: clamp(18px, 2.8dvh, 24px);
+  width: min(100%, 500px);
+  margin: clamp(16px, 3dvh, 44px) auto 0;
+}
+.menu__actions .btn {
+  animation: action-rise 520ms var(--ease-spring) both;
+}
+.menu__actions .btn:nth-child(1) { animation-delay: 950ms; }
+.menu__actions .btn:nth-child(2) { animation-delay: 1050ms; }
+@keyframes action-rise {
+  from { opacity: 0; transform: translateY(24px); }
+}
+.menu__identity {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+  font-size: var(--fs-sm);
+  color: var(--dim);
+}
+.menu__identity button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  font-weight: 700;
+  color: var(--chalk);
+  background: rgba(255, 255, 255, 0.06);
+}
+.menu__identity svg {
+  width: 16px;
+  height: 16px;
+  color: var(--muted);
+}
+
+/* Tablette / ordinateur : la scène entière est centrée, éventail plus ouvert */
+@media (min-width: 700px) and (min-height: 521px) {
+  .menu__hero {
+    flex: 0 1 auto;
+    margin-top: auto;
+  }
+  .menu::after {
+    content: '';
+    flex: 1;
+  }
+  .fan__slot {
+    --spread: 24%;
+  }
+}
+
+/* Téléphone en paysage : héros à gauche, boutons à droite */
+@media (orientation: landscape) and (max-height: 520px) {
+  .menu {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    grid-template-rows: auto 1fr auto;
+    column-gap: clamp(20px, 4vw, 48px);
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-3);
+  }
+  .menu > .topbar {
+    grid-column: 1 / -1;
+    min-height: 40px;
+  }
+  .menu__hero {
+    grid-column: 1;
+    grid-row: 2 / 4;
+    align-self: center;
+  }
+  .menu__tagline {
+    display: none;
+  }
+  .menu__actions {
+    grid-column: 2;
+    grid-row: 2;
+    align-self: center;
+    margin: 0;
+  }
+  .menu__identity {
+    grid-column: 2;
+    grid-row: 3;
+    margin-top: var(--space-2);
+  }
+  .fan {
+    --card-w: clamp(76px, 22dvh, 120px);
+  }
+  .menu .brand {
+    --fs-logo: clamp(2.6rem, 12dvh, 3.6rem);
+  }
+  .fan__slot {
+    --spread: 18%;
+  }
+}
+
+/* Version démo : place pour le bandeau en bas */
+body:has(.demo-badge) .form-screen,
+body:has(.demo-badge) .menu {
+  padding-bottom: calc(40px + var(--safe-bottom));
+}
+
+/* Le logo passe DEVANT les cartes de l'éventail */
+.menu__hero .brand {
+  position: relative;
+  z-index: 20;
+}
+
+/* ---------- Éventail de cartes ---------- */
+.fan {
+  --card-w: clamp(76px, min(28vw, 15dvh), 158px);
+  position: relative;
+  width: min(100%, 560px);
+  height: calc(var(--card-w) / 0.7 + 30px);
+  margin-bottom: calc(var(--card-w) * -0.28); /* le logo vient chevaucher le bas des cartes */
+}
+.fan__slot {
+  --spread: 12%; /* écart horizontal entre les cartes (plus large sur grand écran) */
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: var(--card-w);
+  margin-left: calc(var(--card-w) / -2);
+  transform-origin: 50% 170%;
+  transform:
+    translateX(calc(var(--offset) * var(--spread)))
+    rotate(calc(var(--offset) * 13deg))
+    translateY(calc(var(--lift) * 8px));
+  z-index: calc(10 - var(--lift));
+}
+.fan-card {
+  --cat: var(--gold);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 0.7;
+  padding: 5px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, #e9e4ff);
+  box-shadow:
+    0 0 0 3px #140c40,
+    0 22px 30px -12px rgba(0, 0, 0, 0.75),
+    0 0 36px color-mix(in srgb, var(--cat) 40%, transparent);
+  animation:
+    card-deal 720ms var(--ease-spring) both,
+    card-float 4.8s ease-in-out infinite alternate;
+  animation-delay:
+    calc(80ms + var(--i) * 90ms),
+    calc(1200ms + var(--i) * 300ms);
+}
+.fan-card[data-cat='personnalites'] { --cat: var(--cat-personnalites); }
+.fan-card[data-cat='films_series'] { --cat: var(--cat-films_series); }
+.fan-card[data-cat='sport'] { --cat: var(--cat-sport); }
+.fan-card[data-cat='disney'] { --cat: var(--cat-disney); }
+.fan-card[data-cat='mix'] { --cat: var(--cat-mix); }
+@keyframes card-deal {
+  from { opacity: 0; transform: translateY(70%) rotate(calc(var(--offset) * -14deg)) scale(0.7); }
+}
+@keyframes card-float {
+  to { transform: translateY(-7px); }
+}
+.fan-card__art {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 11px;
+  box-shadow: 0 0 0 2px #140c40;
+}
+.fan-card__label {
+  display: block;
+  padding: 6px 2px 2px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(0.5rem, 0.36rem + 0.6vw, 0.72rem);
+  color: #140c40;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fan-card__corner {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 0.75rem;
+  color: #140c40;
+  background: var(--cat);
+  box-shadow: 0 0 0 2.5px #140c40;
+}
+
+/* ============ FORMULAIRES (Créer / Rejoindre) ============ */
+.form-screen__body {
+  display: grid;
+  align-content: center;
+  gap: var(--space-6);
+  flex: 1;
+  width: min(100%, 460px);
+  margin: 0 auto;
+  padding: var(--space-5) 0;
+}
+.form-screen__title {
+  font-size: var(--fs-xl);
+  text-align: center;
+}
+.form-screen__lead {
+  margin-top: var(--space-2);
+  text-align: center;
+  color: var(--muted);
+}
+.code-entry {
+  position: relative;
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+}
+/* Le vrai champ de saisie est invisible mais couvre les tuiles :
+   le clavier mobile s'ouvre au toucher, le collage fonctionne. */
+.code-entry__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  opacity: 0;
+  font-size: 16px; /* évite le zoom automatique sur iOS */
+  text-transform: uppercase;
+}
+.code-entry.is-shaking .code-tiles {
+  animation: shake 380ms;
+}
+@keyframes shake {
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+/* ============ LOBBY ============ */
+.lobby {
+  gap: var(--space-5);
+  padding-bottom: calc(120px + var(--safe-bottom)); /* place pour la barre d'action fixe */
+}
+.lobby__code {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+}
+.lobby__code-label {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--muted);
+}
+.lobby__code-actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.lobby__count {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+.lobby__count b {
+  color: var(--gold);
+}
+
+/* Section titrée */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
+}
+.section-head h2 {
+  font-size: var(--fs-lg);
+}
+.section-head p {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+
+/* Équipes : 2 colonnes même sur mobile (A à gauche, B à droite) */
+.teams {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+.team {
+  --team: var(--team-a);
+  display: grid;
+  align-content: start;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--team) 14%, rgba(18, 12, 58, 0.8)), rgba(18, 12, 58, 0.6));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--team) 30%, transparent) inset;
+}
+.team[data-team='B'] {
+  --team: var(--team-b);
+}
+.team__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 4px 6px;
+}
+.team__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: var(--fs-sm);
+  color: var(--team);
+  text-shadow: 0 0 16px color-mix(in srgb, var(--team) 60%, transparent);
+}
+.team__size {
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+/* Sur petit écran, panneaux joueurs compacts dans les colonnes */
+@media (max-width: 520px) {
+  .team {
+    padding: 10px 8px;
+  }
+  .team .player {
+    gap: 8px;
+    padding: 6px 8px 6px 6px;
+  }
+  .team .player__avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+  .team .player__name {
+    font-size: var(--fs-sm);
+  }
+  /* Pastille de connexion et bouton ⇄ passent dans les coins pour laisser la place au nom */
+  .team .player__status {
+    position: absolute;
+    top: 7px;
+    right: 7px;
+    width: 8px;
+    height: 8px;
+  }
+  .team .player__move {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    width: 28px;
+    height: 28px;
+    border-radius: 9px;
+  }
+  .team .player__move svg {
+    width: 15px;
+    height: 15px;
+  }
+  .team .player__body {
+    padding-right: 14px;
+  }
+  .team__head {
+    flex-wrap: wrap;
+    gap: 2px 8px;
+  }
+}
+
+/* Grille des catégories */
+.categories {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+/* La 5e carte (Mix) prend toute la largeur sur mobile */
+.categories > :last-child:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+.categories > :last-child:nth-child(odd) .cat-card__art {
+  aspect-ratio: 3 / 1.25;
+}
+.categories__note {
+  margin-top: var(--space-3);
+  font-size: var(--fs-xs);
+  color: var(--muted);
+  text-align: center;
+}
+
+/* Barre d'action fixe en bas (Lancer / attente) */
+.action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 16px clamp(16px, 4vw, 40px) calc(16px + var(--safe-bottom));
+  background: linear-gradient(180deg, transparent, rgba(9, 6, 32, 0.92) 30%);
+}
+.action-bar .btn {
+  width: min(100%, 520px);
+}
+.action-bar__hint {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--muted);
+  text-align: center;
+}
+.waiting-dots::after {
+  content: '';
+  animation: dots 1.4s steps(4) infinite;
+}
+@keyframes dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
+/* Tablette : lobby sur 2 colonnes (joueurs | catégories) */
+@media (min-width: 900px) {
+  .lobby__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--space-6);
+    align-items: start;
+  }
+  .lobby__grid > * + * {
+    margin-top: 0;
+  }
+  .categories {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .categories > :last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+  .categories > :last-child:nth-child(odd) .cat-card__art {
+    aspect-ratio: 3 / 2;
+  }
+}
+@media (max-width: 899px) {
+  .lobby__grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+}
+/* Grand écran : plus d'air */
+@media (min-width: 1300px) {
+  .lobby {
+    width: min(100%, 1320px);
+    margin: 0 auto;
+  }
+}
+
+/* ============ ÉCRAN DE JEU (provisoire, étape 6 à venir) ============ */
+.game-wait {
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-5);
+  text-align: center;
+}
+.game-wait__round {
+  font-size: var(--fs-2xl);
+}
+.game-wait__card {
+  padding: var(--space-6);
+  width: min(100%, 460px);
+}
+
+/* ============ Téléphone en paysage : écrans plus compacts ============ */
+@media (orientation: landscape) and (max-height: 520px) {
+  .screen {
+    padding-top: var(--space-2);
+  }
+  .form-screen__body {
+    gap: var(--space-4);
+    padding: var(--space-2) 0;
+  }
+  .lobby {
+    gap: var(--space-4);
+    padding-bottom: calc(96px + var(--safe-bottom));
+  }
+  /* Code : titre, tuiles et boutons sur une seule ligne */
+  .lobby__code {
+    grid-template-columns: auto auto auto;
+    justify-content: center;
+    align-items: center;
+    column-gap: var(--space-5);
+    padding: var(--space-3) var(--space-4);
+  }
+  .lobby__count {
+    grid-column: 1 / -1;
+  }
+  .action-bar {
+    grid-template-columns: auto auto;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-4);
+    padding-top: 10px;
+    padding-bottom: calc(10px + var(--safe-bottom));
+  }
+  .action-bar .btn {
+    width: auto;
+    min-width: 280px;
+  }
+  /* Paysage : équipes et catégories côte à côte */
+  .lobby__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--space-5);
+  }
+  .categories {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .categories > :last-child:nth-child(odd) {
+    grid-column: auto;
+  }
+  .categories > :last-child:nth-child(odd) .cat-card__art {
+    aspect-ratio: 3 / 2;
+  }
+  .cat-card__info {
+    display: none;
+  }
+  .cat-card__title {
+    font-size: 0.78rem;
+  }
+  .game-wait__round {
+    font-size: var(--fs-xl);
+  }
+}
